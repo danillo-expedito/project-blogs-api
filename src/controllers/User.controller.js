@@ -33,7 +33,13 @@ const userLogin = async (req, res) => {
     return res.status(200).json({ token });
 };
 
+const getAllUsers = async (req, res) => {
+    const users = await UserService.getAll();
+    return res.status(200).json(users);
+};
+
 module.exports = {
     createUser,
     userLogin,
+    getAllUsers,
 };
