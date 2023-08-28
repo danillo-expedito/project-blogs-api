@@ -22,13 +22,10 @@ module.exports = {
           model: 'categories',
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
-    },
-    {
-      timestamps: false,
-      tableName: 'posts_categories',
-    },
-    );
+    });
   },
 
   down: async (queryInterface, Sequelize) => {

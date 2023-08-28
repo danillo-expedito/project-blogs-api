@@ -24,12 +24,7 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: false,
       }
-    },
-    {
-      timestamps: false,
-      tableName: 'users',
-    },
-    );
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
