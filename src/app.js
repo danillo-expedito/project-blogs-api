@@ -1,5 +1,5 @@
 const express = require('express');
-const { UserController, CategoryController } = require('./controllers');
+const { UserController, CategoryController, BlogPostController } = require('./controllers');
 const validateToken = require('./middlewares/auth');
 // ...
 
@@ -23,6 +23,8 @@ app.get('/user/:id', validateToken, UserController.getById);
 app.post('/categories', validateToken, CategoryController.createCategory);
 
 app.get('/categories', validateToken, CategoryController.getAllCategories);
+
+app.post('/post', validateToken, BlogPostController.createBlogPost);
 // ...
 
 // É importante exportar a constante `app`,
