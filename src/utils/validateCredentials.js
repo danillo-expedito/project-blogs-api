@@ -24,8 +24,15 @@ const validatePostFields = (body) =>
     categoryIds: Joi.array().required(),
     }).error(new Error(defaultMessage)).validate(body);
 
+const validatePutFields = (body) => 
+    Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().required(),
+    }).error(new Error(defaultMessage)).validate(body);
+
 module.exports = {
     validateUserFields,
     validateNewUser,
     validatePostFields,
+    validatePutFields,
 };

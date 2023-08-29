@@ -1,5 +1,5 @@
 const { BlogPostService, CategoryService } = require('../services');
-const { validatePostFields } = require('../utils/validateCredentials');
+const { validatePostFields, validatePutFields } = require('../utils/validateCredentials');
 
 const createBlogPost = async (req, res) => {
     const { title, content, categoryIds } = req.body;
@@ -45,8 +45,30 @@ const getBlogPostById = async (req, res) => {
     }
 };
 
+const updateBlogPost = async (req, res) => {
+    const { title, content } = req.body;
+    const { userId } = req.user;
+    const { id } = req.params;
+
+    const blogPost = await BlogPostService.getById(id);
+    if (blogPost.userId !== userId) {
+        return res.status(401).json({ message: 'Unauthorized user' });
+    }
+
+    const { error } = validatePutFields(req.body);
+    if (error) return res.status(400).json({ message: error.message });
+
+    try {
+        const updatedBlogPost = await BlogPostService.update(id, title, content);
+        return res.status(200).json(updatedBlogPost);
+    } catch (e) {
+        return res.status(500).json({ message: 'Erro interno', error: e });
+    }
+};
+
 module.exports = {
     createBlogPost,
     getAllBlogPosts,
     getBlogPostById,
+    updateBlogPost,
 };

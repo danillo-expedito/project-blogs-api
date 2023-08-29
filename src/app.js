@@ -29,6 +29,8 @@ app.post('/post', validateToken, BlogPostController.createBlogPost);
 app.get('/post', validateToken, BlogPostController.getAllBlogPosts);
 
 app.get('/post/:id', validateToken, BlogPostController.getBlogPostById);
+
+app.put('/post/:id', validateToken, BlogPostController.updateBlogPost);
 // ...
 
 // É importante exportar a constante `app`,
