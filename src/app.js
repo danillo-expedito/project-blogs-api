@@ -1,6 +1,6 @@
 const express = require('express');
-const { UserController, CategoryController, BlogPostController } = require('./controllers');
-const validateToken = require('./middlewares/auth');
+const { UserRoutes, CategoryRoutes, BlogPostRoutes } = require('./routes');
+const { UserController } = require('./controllers');
 // ...
 
 const app = express();
@@ -12,31 +12,13 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
-app.get('/post/search', validateToken, BlogPostController.searchBlogPosts);
+app.use('/user', UserRoutes);
+
+app.use('/categories', CategoryRoutes);
+
+app.use('/post', BlogPostRoutes);
 
 app.post('/login', UserController.userLogin);
-
-app.post('/user', UserController.createUser);
-
-app.get('/user', validateToken, UserController.getAllUsers);
-
-app.get('/user/:id', validateToken, UserController.getById);
-
-app.post('/categories', validateToken, CategoryController.createCategory);
-
-app.get('/categories', validateToken, CategoryController.getAllCategories);
-
-app.post('/post', validateToken, BlogPostController.createBlogPost);
-
-app.get('/post', validateToken, BlogPostController.getAllBlogPosts);
-
-app.get('/post/:id', validateToken, BlogPostController.getBlogPostById);
-
-app.put('/post/:id', validateToken, BlogPostController.updateBlogPost);
-
-app.delete('/post/:id', validateToken, BlogPostController.deleteBlogPost);
-
-app.delete('/user/me', validateToken, UserController.deleteUser);
 
 // ...
 
