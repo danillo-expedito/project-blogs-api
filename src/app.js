@@ -33,6 +33,8 @@ app.get('/post/:id', validateToken, BlogPostController.getBlogPostById);
 app.put('/post/:id', validateToken, BlogPostController.updateBlogPost);
 
 app.delete('/post/:id', validateToken, BlogPostController.deleteBlogPost);
+
+app.delete('/user/me', validateToken, UserController.deleteUser);
 // ...
 
 // É importante exportar a constante `app`,
