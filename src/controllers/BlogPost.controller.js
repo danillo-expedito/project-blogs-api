@@ -1,6 +1,8 @@
 const { BlogPostService, CategoryService } = require('../services');
 const { validatePostFields, validatePutFields } = require('../utils/validateCredentials');
 
+const internalError = 'Erro interno';
+
 const createBlogPost = async (req, res) => {
     const { title, content, categoryIds } = req.body;
     const { userId } = req.user;
@@ -17,7 +19,7 @@ const createBlogPost = async (req, res) => {
         const newBlogPost = await BlogPostService.create(title, content, categoryIds, userId);
         return res.status(201).json(newBlogPost);
     } catch (e) {
-        return res.status(500).json({ message: 'Erro interno', error: e });
+        return res.status(500).json({ message: internalError, error: e });
     }
 };
 
@@ -26,7 +28,7 @@ const getAllBlogPosts = async (_req, res) => {
         const blogPosts = await BlogPostService.getAll();
         return res.status(200).json(blogPosts);
     } catch (e) {
-        return res.status(500).json({ message: 'Erro interno', error: e });
+        return res.status(500).json({ message: internalError, error: e });
     }
 };
 
@@ -41,7 +43,7 @@ const getBlogPostById = async (req, res) => {
 
         return res.status(200).json(blogPost);
     } catch (e) {
-        return res.status(500).json({ message: 'Erro interno', error: e });
+        return res.status(500).json({ message: internalError, error: e });
     }
 };
 
@@ -62,7 +64,28 @@ const updateBlogPost = async (req, res) => {
         const updatedBlogPost = await BlogPostService.update(id, title, content);
         return res.status(200).json(updatedBlogPost);
     } catch (e) {
-        return res.status(500).json({ message: 'Erro interno', error: e });
+        return res.status(500).json({ message: internalError, error: e });
+    }
+};
+
+const deleteBlogPost = async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.user;
+
+    const postExists = await BlogPostService.getById(id);
+    if (!postExists) {
+        return res.status(404).json({ message: 'Post does not exist' });
+    }
+
+    if (postExists.userId !== userId) {
+        return res.status(401).json({ message: 'Unauthorized user' });
+    }
+
+    try {
+        await BlogPostService.exclude(id);
+        return res.status(204).json();
+    } catch (e) {
+        return res.status(500).json({ message: internalError, error: e });
     }
 };
 
@@ -71,4 +94,5 @@ module.exports = {
     getAllBlogPosts,
     getBlogPostById,
     updateBlogPost,
+    deleteBlogPost,
 };

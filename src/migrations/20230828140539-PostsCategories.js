@@ -12,6 +12,8 @@ module.exports = {
           model: 'blog_posts',
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       category_id: {
         type: Sequelize.INTEGER,

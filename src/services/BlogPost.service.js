@@ -61,9 +61,15 @@ const update = async (id, title, content) => {
     return updatedBlogPost;
 };
 
+const exclude = async (id) => {
+    await BlogPost.destroy({ where: { id } });
+    // await PostCategory.destroy({ where: { postId: id } });
+};
+
 module.exports = {
     create,
     getAll,
     getById,
     update,
+    exclude,
 };
