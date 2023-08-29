@@ -30,7 +30,23 @@ const getAllBlogPosts = async (_req, res) => {
     }
 };
 
+const getBlogPostById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blogPost = await BlogPostService.getById(id);
+
+        if (!blogPost) {
+            return res.status(404).json({ message: 'Post does not exist' });
+        }
+
+        return res.status(200).json(blogPost);
+    } catch (e) {
+        return res.status(500).json({ message: 'Erro interno', error: e });
+    }
+};
+
 module.exports = {
     createBlogPost,
     getAllBlogPosts,
+    getBlogPostById,
 };
