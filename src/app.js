@@ -12,6 +12,8 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
+app.get('/post/search', validateToken, BlogPostController.searchBlogPosts);
+
 app.post('/login', UserController.userLogin);
 
 app.post('/user', UserController.createUser);
@@ -35,6 +37,7 @@ app.put('/post/:id', validateToken, BlogPostController.updateBlogPost);
 app.delete('/post/:id', validateToken, BlogPostController.deleteBlogPost);
 
 app.delete('/user/me', validateToken, UserController.deleteUser);
+
 // ...
 
 // É importante exportar a constante `app`,
